@@ -34,7 +34,7 @@ except KeyError:
 
 
 def format_journal(journal):
-    journal['NetProfit'] = journal['PnL'] + journal['Commission']
+    journal['NetProfit'] = journal['PnL']
     # select date closed and net profit
     journal = journal[['DateClosed', 'NetProfit']]
     # convert to datetime date closed
