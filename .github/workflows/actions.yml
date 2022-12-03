@@ -2,8 +2,7 @@ name: run main.py
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *" # Everyday at 8PM UTC
+  repository_dispatch:
 
 jobs:
   build:
