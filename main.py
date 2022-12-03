@@ -85,7 +85,7 @@ if __name__ == "__main__":
         spy.index = spy.index.tz_localize(None)
 
         qs.reports.html(journal, benchmark=spy, download_filename='index.html',
-                        title='Real Trading for a Living', output='journal.html')
+                        output='journal.html', benchmark_title='SPY')
 
         format_html('index.html')
 
