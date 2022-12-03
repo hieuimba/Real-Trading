@@ -2,7 +2,6 @@ import logging
 import logging.handlers
 import os
 from bs4 import BeautifulSoup
-import copy
 
 import requests
 from datetime import timedelta, datetime
