@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 import os
+from bs4 import BeautifulSoup
+import copy
 
 import requests
 from datetime import timedelta, datetime
@@ -23,6 +25,7 @@ formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger_file_handler.setFormatter(formatter)
 logger.addHandler(logger_file_handler)
+
 
 try:
     JOURNAL_URL = os.environ["JOURNAL_URL"]
@@ -62,17 +65,31 @@ def format_journal(journal):
     return journal
 
 
+def format_html(file):
+    with open(file, 'r+') as f:
+        html = f.read()
+        soup = BeautifulSoup(html, 'html.parser')
+        # change title
+        soup.title.string.replace_with('Real Trading for a Living')
+        # save to file
+        f.seek(0)
+        f.write(str(soup))
+
+
 if __name__ == "__main__":
     r = requests.get(JOURNAL_URL, headers={'x-api-key': API_KEY})
     if r.status_code == 200:
         data = pd.DataFrame(r.json())
         journal = format_journal(data)
 
-        spy = qs.utils.download_returns('SPY', period='1y')
+        spy = qs.utils.download_returns('SPY', period='5y')
         spy.index = spy.index.tz_localize(None)
 
         qs.reports.html(journal, benchmark=spy, download_filename='index.html',
                         title='Real Trading for a Living', output='journal.html')
+
+        format_html('index.html')
+
         logger.info(f'Updated')
     else:
         logger.error(f"Error: {r.status_code}")
