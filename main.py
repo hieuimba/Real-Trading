@@ -4,13 +4,10 @@ import os
 from bs4 import BeautifulSoup
 
 import requests
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 import pandas as pd
 import quantstats as qs
-
-# get current datetime
-now = datetime.now()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -72,6 +69,7 @@ def format_html(file):
         soup.title.string.replace_with('Real Trading for a Living')
         # save to file
         f.seek(0)
+        f.truncate()
         f.write(str(soup))
 
 
